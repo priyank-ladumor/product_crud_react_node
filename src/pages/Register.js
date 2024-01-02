@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from '../store/actions/auth';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, Navigate } from 'react-router-dom';
 import { loginContext } from '../App';
 
 
@@ -19,13 +19,13 @@ const schema = yup.object({
 
 const Register = ({ settoggle }) => {
     useEffect(() => {
-        settoggle(false)
+        settoggle(true)
     }, [])
 
     let auth3 = localStorage.getItem("usertoken") || localStorage.getItem("username")
     useEffect(() => {
         if (auth3) {
-            navigate('/')
+            navigate('/products?page=1')
         }
     }, [auth3])
 

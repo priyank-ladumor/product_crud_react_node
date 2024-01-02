@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, Navigate } from 'react-router-dom';
 import { loginUser } from '../store/actions/auth';
 import { auth } from "../firebase/firebaseConfig"
 import { Logout } from '../store/slices/authSlice';
@@ -22,13 +22,13 @@ const schema = yup.object({
 const Login = ({ settoggle }) => {
 
     useEffect(() => {
-        settoggle(false)
+        settoggle(true)
     }, [])
 
     let auth3 = localStorage.getItem("usertoken") || localStorage.getItem("username")
     useEffect(() => {
         if (auth3) {
-            navigate('/')
+            navigate('/products?page=1')
         }
     }, [auth3])
 
@@ -55,8 +55,8 @@ const Login = ({ settoggle }) => {
         const provider = new GoogleAuthProvider()
         signInWithPopup(auth, provider)
             .then((result) => {
-                const { displayName, email, photoUrl, emailVerified } = result.user;
-                setUserData({ displayName, email, photoUrl, emailVerified })
+                const { displayName, email, photoUrl, emailVerified, idToken } = result.user;
+                setUserData({ displayName, email, photoUrl, emailVerified , idToken})
                 setislogin(true)
             }).catch((error) => {
                 console.log({ error });
@@ -71,7 +71,7 @@ const Login = ({ settoggle }) => {
         let auth2 = localStorage.getItem("username")
         if (islogin && userdata && auth2) {
             setTimeout(() => {
-                navigate('/')
+                navigate('/products?page=1')
             }, 200);
         }
     }, [islogin])
@@ -128,7 +128,7 @@ const Login = ({ settoggle }) => {
     //email login navigate
     useEffect(() => {
         if (issuccess && auth2) {
-            navigate('/')
+            navigate('/products?page=1')
         }
     }, [issuccess])
 

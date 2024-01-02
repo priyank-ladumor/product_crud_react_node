@@ -1,0 +1,54 @@
+body {
+    /* background-color: rgba(243, 243, 244, 1); */
+    background-color: #fbfbfb;
+}
+.block {
+    background-color: white;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    padding: 40px 0px;
+}
+.errormsg{
+    margin-top: -10px;
+    color: red;
+}
+.errormsg2{
+    color: red;
+}
+
+.btn-trash {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    z-index: 2;
+}
+
+@media screen and (max-width: 767px) {
+    .trash{
+        right: 75px !important;
+    }
+}
+@media screen and (max-width: 565px) {
+    .trash{
+        right: 85px !important;
+    }
+}
+@media screen and (max-width: 555px) {
+    .trash{
+        right: 75px !important;
+    }
+}
+@media screen and (max-width: 475px) {
+    .trash{
+        right: 55px !important;
+    }
+}
+@media screen and (max-width: 375px) {
+    .trash{
+        right: 25px !important;
+    }
+}
+@media screen and (max-width: 425px) {
+    .trash{
+        right: 25px !important;
+    }
+}

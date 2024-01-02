@@ -1,12 +1,13 @@
+import { useEffect, useState } from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 
 const Protected = () => {
 
-    let auth = localStorage.getItem("usertoken") || localStorage.getItem("username")
+        let auth = localStorage.getItem("usertoken") || localStorage.getItem("username")
 
     return (
         <div>
-            {auth?.length > 0  ? <Outlet /> : <Navigate to="/login" replace />}
+            {auth?.length > 0 ? <Outlet /> : <Navigate to="/login" replace />}
         </div>
     )
 }

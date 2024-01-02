@@ -19,10 +19,12 @@ const Navbar = () => {
         settoken('')
         navigate('/login', { replace: true })
     }
+    let auth = localStorage.getItem("usertoken") || localStorage.getItem("username")
+
     return (
         <div>
             <nav
-                className="navbar navbar-expand-lg navbar-dark sticky-top"
+                className="navbar navbar-expand-lg navbar-dark sticky-top border-bottom"
                 style={{ background: "#0a2647" }}
             >
                 <div className="container-fluid">
@@ -48,7 +50,7 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mx-auto mb-2 mb-lg-0 ">
                             <li className="nav-item">
-                                <NavLink className="nav-link nav-text" to="/" style={({ isActive, isPending, isTransitioning }) => {
+                                <NavLink className="nav-link nav-text" to="/products?page=1" style={({ isActive, isPending, isTransitioning }) => {
                                     return {
                                         fontWeight: isActive ? "bold" : "",
                                         color: isPending ? "red" : "white",
@@ -59,12 +61,12 @@ const Navbar = () => {
                                         data-bs-toggle="collapse"
                                         data-bs-target=".navbar-collapse.show"
                                     >
-                                        Home
+                                        Products
                                     </span>
                                 </NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link nav-text" to="/addproduct" style={({ isActive, isPending, isTransitioning }) => {
+                                <NavLink className="nav-link nav-text" to="/add/product" style={({ isActive, isPending, isTransitioning }) => {
                                     return {
                                         fontWeight: isActive ? "bold" : "",
                                         color: isPending ? "red" : "white",
@@ -80,37 +82,42 @@ const Navbar = () => {
                                 </NavLink>
                             </li>
                         </ul>
-                        <CDropdown variant="btn-group" >
-                            <CDropdownToggle color={'primary'}>Profile</CDropdownToggle>
-                            <CDropdownMenu>
-                                <ul className='' style={{listStyle:"none", fontSize:"18px", fontWeight:"600"}}>
-                                    <li className='mb-2 d-hover'>
-                                        <NavLink className="nav-link nav-text" to="/profile">
-                                            <span
-                                                data-bs-toggle="collapse"
-                                                data-bs-target=".navbar-collapse.show"
-                                            >
-                                                My Profile
-                                            </span>
-                                        </NavLink>
-                                    </li>
-                                    <li className='d-hover'>
-                                        <NavLink className="nav-link nav-text" to="/products">
-                                            <span
-                                                data-bs-toggle="collapse"
-                                                data-bs-target=".navbar-collapse.show"
-                                            >
-                                                My Product
-                                            </span>
-                                        </NavLink>
-                                    </li>
-                                </ul>
-                                <CDropdownDivider />
-                                <div className='d-flex justify-content-center'>
-                                    <button className='btn btn-danger' onClick={logout}>logout</button>
-                                </div>
-                            </CDropdownMenu>
-                        </CDropdown>
+                        {auth ?
+                            <CDropdown variant="btn-group" >
+                                <CDropdownToggle color={'primary'}>Profile</CDropdownToggle>
+                                <CDropdownMenu>
+                                    <ul className='' style={{ listStyle: "none", fontSize: "18px", fontWeight: "600" }}>
+                                        <li className='mb-2 d-hover'>
+                                            <NavLink className="nav-link nav-text" to="/profile">
+                                                <span
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target=".navbar-collapse.show"
+                                                >
+                                                    My Profile
+                                                </span>
+                                            </NavLink>
+                                        </li>
+                                        <li className='d-hover'>
+                                            <NavLink className="nav-link nav-text" to="/myproduct">
+                                                <span
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target=".navbar-collapse.show"
+                                                >
+                                                    My Product
+                                                </span>
+                                            </NavLink>
+                                        </li>
+                                    </ul>
+                                    <CDropdownDivider />
+                                    <div className='d-flex justify-content-center'>
+                                        <button className='btn btn-danger' onClick={logout}>logout</button>
+                                    </div>
+                                </CDropdownMenu>
+                            </CDropdown>
+                            :
+                            <NavLink className="nav-link px-3" to="/login"><button className='btn btn-primary'>Login</button></NavLink>
+                            
+                        }
                     </div>
                 </div>
             </nav>
