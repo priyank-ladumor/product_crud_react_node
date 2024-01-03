@@ -59,8 +59,7 @@ const Home = ({ settoggle }) => {
                     </CPaginationItem>
                     {page === 1 ? "" : <CPaginationItem onClick={() => [setpage(page - 1), setUsesearch({ page: page - 1 })]}>{page - 1}</CPaginationItem>}
                     <CPaginationItem active={page}>{page}</CPaginationItem>
-                    <CPaginationItem onClick={() => [setpage(page + 1), setUsesearch({ page: page + 1 })]} disabled={item.length === 0}>{page + 1}</CPaginationItem>
-                    <CPaginationItem aria-label="Next" onClick={() => [setpage(page + 1), setUsesearch({ page: page + 1 })]} disabled={item.length === 0}>
+                    <CPaginationItem onClick={() => [setpage(page + 1), setUsesearch({ page: page + 1 })]} disabled={item.length === 0}>{page + 1}</CPaginationItem>                  <CPaginationItem aria-label="Next" onClick={() => [setpage(page + 1), setUsesearch({ page: page + 1 })]} disabled={item.length === 0}>
                         <span aria-hidden="true">&raquo;</span>
                     </CPaginationItem>
                 </CPagination>
@@ -87,7 +86,9 @@ const Home = ({ settoggle }) => {
                                     <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
                                         <div className="container-fluid m-4">
                                             <div className="card border-0 rounded-0 shadow" style={{ width: "18rem" }}>
-                                                <img src={val?.images[0]} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." />
+                                                {
+                                                    val?.images[0] && <img src={require(`../images/${val.images[0]}`)} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." />
+                                                }
                                                 <div className="card-body mt-3 mb-3">
                                                     <div className="row">
                                                         <div className="col-12">
@@ -121,8 +122,6 @@ const Home = ({ settoggle }) => {
                     }
                 </div>
             }
-
-
             <ToastContainer />
         </div>
     )

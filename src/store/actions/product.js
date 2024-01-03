@@ -115,7 +115,7 @@ export const createProducts = createAsyncThunk(
         item,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             "Authorization": token
           },
         }
@@ -134,14 +134,15 @@ export const createProducts = createAsyncThunk(
 export const updateProductAction = createAsyncThunk(
   "update/products",
   async (item, { rejectWithValue }) => {
+    console.log(item.getId , "iddd");
     const token = JSON.parse(localStorage.getItem('usertoken'))
     try {
       const result = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/product/${item.id}`,
-        item,
+        `${process.env.REACT_APP_BASE_URL}/product/${item.getId}`,
+        item.fd,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
             "Authorization": token
           },
         }

@@ -10,7 +10,6 @@ import { FaTrash } from "react-icons/fa"
 import { updateProductContext } from "../App";
 import { updateProductAction } from "../store/actions/product";
 
-
 const schema = yup.object({
     title: yup
         .string()
@@ -43,7 +42,7 @@ const EditProduct = () => {
     const { userproduct, updatesuccess } = useSelector((state) => state.product);
     const { getId, setGetId } = useContext(updateProductContext)
 
-
+    const fd = new FormData()
 
     var empty = [];
     const [images, setimages] = useState([]);
@@ -55,13 +54,6 @@ const EditProduct = () => {
     const dispatch = useDispatch();
 
     const [userproductmodal, setuserproductmodal] = useState()
-
-    // useEffect(() => {
-    //     if (userproduct) {
-    //         const modeluser = Array.from(userproduct).filter((e, i) => e._id === findidd)
-    //         setuserproductmodal(modeluser)
-    //     }
-    // }, [findidd])
 
     useEffect(() => {
         setGetId(null)
@@ -95,16 +87,17 @@ const EditProduct = () => {
             setValue("discountPercentage", modeldata?.discountPercentage);
         }
     }, [userproductmodal])
-
+    const [prvimg, setprvimg] = useState([])
     useEffect(() => {
         if (updateproduct) {
-            setimages(updateproduct.images)
+            setprvimg(updateproduct.images)
+            // setimages(updateproduct.images)
         }
     }, [updateproduct])
 
-    useEffect(() => {
-        setupdateproduct({ ...updateproduct, images: images });
-    }, [images])
+    // useEffect(() => {
+    //     setupdateproduct({ ...updateproduct, images: images });
+    // }, [images])
 
     const onReset = () => {
         setimages(empty);
@@ -113,12 +106,12 @@ const EditProduct = () => {
     };
 
     useEffect(() => {
-        if (images.length > 0) {
+        if (images?.length > 0 || prvimg?.length > 0) {
             const rmv = "";
             setimgerr(rmv);
             setimglenerr(rmv);
         }
-    }, [images]);
+    }, [images, prvimg]);
 
     const uploadimages = (e) => {
         const files = e.target.files;
@@ -128,6 +121,7 @@ const EditProduct = () => {
             setimglenerr('Maximum images allowed is five')
             setimgerr("")
         } else {
+            setimages(e.target.files)
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 if (file) {
@@ -144,31 +138,37 @@ const EditProduct = () => {
             }
 
             Promise.all(imagePromises).then((results) => {
-                setimages(results);
+                setprvimg(results);
             });
         }
     }
 
     const onSubmit = (data) => {
 
-        console.log(data);
+        fd.append("title", data.title)
+        fd.append("description", data.description)
+        fd.append("price", data.price)
+        fd.append("discountPercentage", data.discountPercentage)
+        fd.append("rating", data.rating)
+        fd.append("stock", data.stock)
+        fd.append("brand", data.brand)
+        fd.append("category", data.category)
+
         const item = {
-            title: data.title,
-            description: data.description,
-            price: data.price,
-            discountPercentage: data.discountPercentage,
-            rating: data.rating,
-            stock: data.stock,
-            brand: data.brand,
-            category: data.category,
-            images: images,
-            id: getId
+            fd,
+            getId
         }
-        if (images.length > 0) {
-            dispatch(updateProductAction(item));
+
+        if (images?.length > 0) {
+            for (let i = 0; i < images.length; i++) {
+                fd.append("images", images[i])
+            }
+        }
+
+        dispatch(updateProductAction(item));
+        if (images?.length > 0 || prvimg?.length > 0) {
             // setGetId(null)
             setupdateproduct(null)
-            // navigate("/products?page=1")
             // onReset();
             // setimages(empty);
         }
@@ -176,20 +176,22 @@ const EditProduct = () => {
     };
 
     const validation = () => {
-        if (images.length === 0) {
+        if (images?.length === 0) {
             const err2 = "You need to provide an image";
             setimgerr(err2);
         }
     };
 
-
-    //delete img from preview
+    // delete img from preview
     const deleteimgs = (delitem, index) => {
-        const handleDelete = images.filter((item, id) => item !== delitem);
-        setimages(handleDelete);
-        // photos.splice(delitem, 1)
+        const handleDelete = prvimg.filter((item, id) => item !== delitem);
+        setprvimg(handleDelete);
+        const img = Array.from(images).filter((ele, i) => i !== index)
+        setimages(img)
     };
-    console.log(getId, "gid");
+    console.log(prvimg, "prvimg");
+    console.log(images, "images");
+    // console.log(getId, "gid");
     return (
         <div>
             <FaEdit type="button" class="" style={{ color: "red", fontSize: "25px" }} data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
@@ -199,12 +201,11 @@ const EditProduct = () => {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Product</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" onClick={() => setGetId(null)} aria-label= "Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" onClick={() => setGetId(null)} aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div
                                 className="bgcolor"
-                            // style={{ backgroundColor: "rgba(243, 243, 244, 1)" }}
                             >
                                 <div className="container-fluid py-4" style={{ width: "70%" }}>
                                     <div className="row block" style={{ backgroundColor: "rgba(243, 243, 244, 1)" }}>
@@ -212,7 +213,6 @@ const EditProduct = () => {
                                             <form
                                                 className="row g-3 justify-content-center"
                                                 onSubmit={handleSubmit(onSubmit)}
-                                            // encType="multipart/form-data"
                                             >
 
                                                 <div className="col-md-5">
@@ -366,31 +366,48 @@ const EditProduct = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {images.length > 0 &&
+                                                {prvimg?.length > 0 &&
                                                     <div className="col-md-10">
                                                         <div className="row col-12 p-4 rounded" style={{ backgroundColor: "whitesmoke", marginLeft: "1px" }}>
-                                                            {images &&
-                                                                images?.map((item, index) => {
+                                                            {prvimg &&
+                                                                Array.from(prvimg)?.map((item, index) => {
                                                                     return (
                                                                         <>
                                                                             <div
                                                                                 className="col-md-6 col-sm-12 col-lg-4 position-relative mb-4"
                                                                                 key={index}
                                                                             >
-                                                                                <img
-                                                                                    // src={item.image}
-                                                                                    src={item}
-                                                                                    alt="img-preview"
-                                                                                    className="img-fluid"
-                                                                                    style={{ width: "250px", height: "200px" }}
-                                                                                />
+                                                                                {(images?.length > 0 && prvimg?.length > 0) &&
+                                                                                    <>
+                                                                                        <img
+                                                                                            src={item}
+                                                                                            // src={require(`../images/${item}`)}
+                                                                                            alt="img-preview"
+                                                                                            className="img-fluid"
+                                                                                            style={{ width: "250px", height: "200px" }}
+                                                                                        />
 
-                                                                                <FaTrash
-                                                                                    className="text-danger btn-trash trash"
-                                                                                    style={{ cursor: "pointer", right: "35px" }}
-                                                                                    // onClick={() => deleteimg(item.id)}
-                                                                                    onClick={() => deleteimgs(item, index)}
-                                                                                />
+
+                                                                                        <FaTrash
+                                                                                            className="text-danger btn-trash trash"
+                                                                                            style={{ cursor: "pointer", right: "35px" }}
+                                                                                            // onClick={() => deleteimg(item.id)}
+                                                                                            onClick={() => deleteimgs(item, index)}
+                                                                                        />
+                                                                                    </>
+                                                                                }
+
+                                                                                {(images?.length === 0 && prvimg?.length > 0) &&
+                                                                                    <>
+                                                                                        <img
+                                                                                            // src={item}                                                                                    
+                                                                                            src={require(`../images/${item}`)}
+                                                                                            alt="img-preview"
+                                                                                            className="img-fluid"
+                                                                                            style={{ width: "250px", height: "200px" }}
+                                                                                        />
+                                                                                    </>
+                                                                                }
                                                                             </div>
                                                                         </>
                                                                     );
@@ -399,8 +416,6 @@ const EditProduct = () => {
                                                             }
                                                         </div>
                                                     </div>}
-
-
 
                                                 <div className="col-md-10">
                                                     <div className="align-items-center">
@@ -424,6 +439,8 @@ const EditProduct = () => {
                                                             value="Add Product"
                                                             className="btn btn-lg btn-success"
                                                             onClick={() => [validation]}
+                                                            data-bs-dismiss="modal"
+                                                            aria-label="Close"
                                                         >
                                                         </input>
                                                         <input
@@ -445,16 +462,6 @@ const EditProduct = () => {
                             </div>
 
                         </div>
-                        {/* <div class="modal-footer">
-                            <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <input
-                                type="submit"
-                                value="Save Product"
-                                className="btn btn-lg btn-success"
-                                onClick={validation}
-                            >
-                            </input>
-                        </div> */}
                     </div>
                 </div>
             </div>

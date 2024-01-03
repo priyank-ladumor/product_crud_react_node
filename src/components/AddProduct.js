@@ -46,27 +46,30 @@ const AddProduct = ({ settoggle }) => {
     // const [photos, setphotos] = useState([]);
     const [imgerr, setimgerr] = useState();
     const [imglenerr, setimglenerr] = useState();
+    const fd = new FormData()
 
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { success } = useSelector((state) => state.product);
+    const { createsuccess } = useSelector((state) => state.product);
 
     const onReset = () => {
         setimages(empty);
+        setprvimg(empty);
         setimgerr("")
         setimglenerr("")
     };
 
     useEffect(() => {
-        if (images.length > 0) {
+        if (images?.length > 0) {
             const rmv = "";
             setimgerr(rmv);
             setimglenerr(rmv);
         }
     }, [images]);
 
+    const [prvimg, setprvimg] = useState()
     const uploadimages = (e) => {
         const files = e.target.files;
         const imagePromises = [];
@@ -75,6 +78,7 @@ const AddProduct = ({ settoggle }) => {
             setimglenerr('Maximum images allowed is five')
             setimgerr("")
         } else {
+            setimages(e.target.files)
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 if (file) {
@@ -91,38 +95,37 @@ const AddProduct = ({ settoggle }) => {
             }
 
             Promise.all(imagePromises).then((results) => {
-                setimages(results);
+                setprvimg(results);
             });
         }
     }
+    console.log(images, "imgs");
+    // console.log(prvimg, "prvimg");
 
     const onSubmit = (data) => {
 
-        console.log(data);
-        const item = {
-            title: data.title,
-            description: data.description,
-            price: data.price,
-            discountPercentage: data.discountPercentage,
-            rating: data.rating,
-            stock: data.stock,
-            brand: data.brand,
-            category: data.category,
-            images: images
-        }
-        console.log(item);
+        fd.append("title", data.title)
+        fd.append("description", data.description)
+        fd.append("price", data.price)
+        fd.append("discountPercentage", data.discountPercentage)
+        fd.append("rating", data.rating)
+        fd.append("stock", data.stock)
+        fd.append("brand", data.brand)
+        fd.append("category", data.category)
+
         if (images.length > 0) {
-            dispatch(createProducts(item));
+            for (let i = 0; i < images.length; i++) {
+                fd.append("images", images[i])
+            }
+        }
+        
+        if (images?.length > 0) {
+            dispatch(createProducts(fd));
             onReset();
             reset();
             setimages(empty);
-        }
 
-    };
-const [succ, setsucc] = useState(success)
-    useEffect(() => {
-        if(succ){
-            toast.success('user login successfully', {
+            toast.success('product added successfully', {
                 position: "top-right",
                 autoClose: 4000,
                 hideProgressBar: false,
@@ -132,12 +135,11 @@ const [succ, setsucc] = useState(success)
                 progress: undefined,
                 theme: "light",
             });
-            setsucc(false)
         }
-    },[success])
+    };
 
     const validation = () => {
-        if (images.length === 0) {
+        if (images?.length === 0) {
             const err2 = "You need to provide an image";
             setimgerr(err2);
         }
@@ -147,9 +149,10 @@ const [succ, setsucc] = useState(success)
 
     //delete img from preview
     const deleteimgs = (delitem, index) => {
-        const handleDelete = images.filter((item, id) => item !== delitem);
-        setimages(handleDelete);
-        // photos.splice(delitem, 1)
+        const handleDelete = prvimg.filter((item, id) => item !== delitem);
+        setprvimg(handleDelete);
+        const img = Array.from(images).filter((ele, i) => i !== index)
+        setimages(img)
     };
 
     return (
@@ -311,11 +314,11 @@ const [succ, setsucc] = useState(success)
                                         </div>
                                     </div>
                                 </div>
-                                {images.length > 0 &&
+                                {prvimg?.length > 0 &&
                                     <div className="col-md-10">
                                         <div className="row col-12 p-4 rounded" style={{ backgroundColor: "whitesmoke", marginLeft: "1px" }}>
-                                            {images &&
-                                                images?.map((item, index) => {
+                                            {prvimg &&
+                                                prvimg?.map((item, index) => {
                                                     return (
                                                         <>
                                                             <div
@@ -387,6 +390,7 @@ const [succ, setsucc] = useState(success)
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </>
     );
 };

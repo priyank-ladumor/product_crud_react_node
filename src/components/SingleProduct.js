@@ -32,8 +32,9 @@ const SingleProduct = ({ settoggle }) => {
         <div>
             <div className='m-5' style={{ border: "", boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px" }}>
                 {singleproducts &&
-                    <img src={singleproducts?.images[0]} alt="img" className='img-fluid' style={{ width: "1820px", height: "500px" }} />
-                }                <div className='m-3'>
+                    singleproducts?.images[0] && <img src={require(`../images/${singleproducts?.images[0]}`)} alt="img" className='img-fluid' style={{ width: "1820px", height: "500px" }} />
+                }
+                <div className='m-3'>
                     <h4>id: {singleproducts?._id}</h4>
                     <h4>title: {singleproducts?.title}</h4>
                     <h4>brand: {singleproducts?.brand}</h4>
