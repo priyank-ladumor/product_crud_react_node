@@ -56,7 +56,7 @@ const Login = ({ settoggle }) => {
         signInWithPopup(auth, provider)
             .then((result) => {
                 const { displayName, email, photoUrl, emailVerified, idToken } = result.user;
-                setUserData({ displayName, email, photoUrl, emailVerified , idToken})
+                setUserData({ displayName, email, photoUrl, emailVerified, idToken })
                 setislogin(true)
             }).catch((error) => {
                 console.log({ error });
@@ -146,10 +146,12 @@ const Login = ({ settoggle }) => {
                             </div>
                             <span class="form__span form">or use your email account</span>
                             <input class="form__input form" type="email" placeholder="Email" {...register("email")} />
-                            {errors && <p className="errormsg" style={errormsg}>{errors.email?.message}</p>}
+                            {errors && <p className="errormsg mt-1" style={errormsg}>{errors.email?.message}</p>}
                             <input class="form__input" type="password" placeholder="Password" {...register("password")} />
-                            {errors && <p className="errormsg" style={errormsg}>{errors.password?.message}</p>}
-                            <a class="form_link form">Forgot your password?</a>
+                            {errors && <p className="errormsg mt-1" style={errormsg}>{errors.password?.message}</p>}
+                            <div className='form'>
+                                <NavLink class="form form_link form d-flex justify-content-center" to="/login/forgot-password">Forgot your password?</NavLink>
+                            </div>
                             <span className='form'> <NavLink to="/register">go to register page</NavLink></span>
                             <div className='form'>
                                 <button class="form form__button button submit" type='submit'>SIGN IN</button>

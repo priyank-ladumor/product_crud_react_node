@@ -12,6 +12,8 @@ import SingleProduct from './components/SingleProduct';
 import MyProduct from './components/MyProduct';
 import AddProduct from './components/AddProduct';
 import EditProduct from './components/EditProduct';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 
 
@@ -36,14 +38,13 @@ function App() {
             {toggle && <Navbar />}
             <Routes>
 
-              {/* {(auth?.length > 0) && <Route exact path="/login" element={<Navigate to="/" replace />} />}
-            {(auth?.length > 0) && <Route exact path="/register" element={<Navigate to="/" replace />} />} */}
-
               {
                 auth?.length > 0 && <Route exact path='/' element={<Navigate to="/products?page=1" replace />} />
               }
 
               <Route path='/login' element={<Login settoggle={settoggle} />} />
+              <Route path='/login/forgot-password' element={<ForgotPassword settoggle={settoggle} />} />
+              <Route path='/user/reset-password/:id/:token' element={<ResetPassword settoggle={settoggle} />} />
               <Route path='/register' element={<Register settoggle={settoggle} />} />
               <Route path='/products' element={<Home settoggle={settoggle} />} />
               <Route path='/productsdetails/:id' element={<SingleProduct settoggle={settoggle} />} />

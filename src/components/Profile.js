@@ -1,23 +1,24 @@
-import React, { useEffect ,useState, useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import "../style/profile.css"
 import profilepic from "../images/profile_un.jpg"
 import { loginContext } from '../App'
 import axios from 'axios'
+import { NavLink } from 'react-router-dom'
 
 const Profile = ({ settoggle }) => {
   const [logindata, setlogindata] = useState("")
   let token = JSON.parse(localStorage.getItem("usertoken"))
 
   const fetchuser = async () => {
-      try{
-          const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user`, { headers: { Authorization: token } })
-          setlogindata(res.data)
-      }catch(err){
-          console.log(err);
-      }
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user`, { headers: { Authorization: token } })
+      setlogindata(res.data)
+    } catch (err) {
+      console.log(err);
+    }
   }
   useEffect(() => {
-      fetchuser()
+    fetchuser()
   }, [])
   useEffect(() => {
     settoggle(true)
@@ -27,7 +28,7 @@ const Profile = ({ settoggle }) => {
   const email = localStorage.getItem('email')
   return (
     <div>
-  <div className="container-fluid">
+      <div className="container-fluid">
         <section className='row'>
           <div className='col-12 d-flex justify-content-center align-items-center' style={{ height: "91vh" }} >
             <div className="col col-lg-9 col-xl-8">
@@ -60,23 +61,10 @@ const Profile = ({ settoggle }) => {
                     </div>
                   </div>
 
-                  <button type="button" className="btn btn-outline-dark ms-3 mt-3" data-mdb-ripple-color="dark" data-bs-toggle="modal" data-bs-target="#exampleModal2" style={{ zIndex: "1" }}>
+                  <NavLink to={`/user/reset-password/${logindata?.id}/${token}`} className="btn btn-outline-dark ms-3 mt-3" style={{ zIndex: "1" }}>
                     Reset Password
-                  </button>
+                  </NavLink>
 
-                  <div className="modal fade" id="exampleModal2" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-dialog-centered">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h1 className="modal-title fs-5" id="exampleModalLabel">Reset Password</h1>
-                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                          {/* <ResetPassword /> */}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
 
                 <div className="card-body px-3 px-md-5 text-black">

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, loginUser } from "../actions/auth";
+import { registerUser, loginUser, ForgotPasswordAction, ResetPasswordAction } from "../actions/auth";
 
 const initialState = {
     loading: false,
@@ -12,6 +12,8 @@ const initialState = {
     iserror: null,
     issuccess: false,
     isrefresh: false,
+    ForgotPassword: false,
+    ResetPassword: false,
 };
 
 const authSlice = createSlice({
@@ -87,6 +89,29 @@ const authSlice = createSlice({
             state.isuserToken = null;
         })
 
+        builder.addCase(ForgotPasswordAction.pending, (state, { payload }) => {
+            state.ForgotPassword = false;
+        })
+
+        builder.addCase(ForgotPasswordAction.fulfilled, (state, { payload }) => {
+            state.ForgotPassword = true;
+        })
+
+        builder.addCase(ForgotPasswordAction.rejected, (state, { payload }) => {
+            state.ForgotPassword = false;
+        })
+
+        builder.addCase(ResetPasswordAction.pending, (state, { payload }) => {
+            state.ResetPassword = false;
+        })
+
+        builder.addCase(ResetPasswordAction.fulfilled, (state, { payload }) => {
+            state.ResetPassword = true;
+        })
+
+        builder.addCase(ResetPasswordAction.rejected, (state, { payload }) => {
+            state.ResetPassword = false;
+        })
     }
 });
 

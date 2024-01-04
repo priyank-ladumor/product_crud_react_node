@@ -91,16 +91,16 @@ const Register = ({ settoggle }) => {
                                 <h2 class="form form_title title mb-2">Register to Website</h2>
 
                                 <input class="form form__input" type="email" placeholder="Email" {...register("email")} />
-                                {errors && <p className="errormsg" style={errormsg}>{errors.email?.message}</p>}
+                                {errors && <p className="errormsg mt-1" style={errormsg}>{errors.email?.message}</p>}
 
                                 <input class="form form__input" type="text" placeholder="Firstname" {...register("firstname")} />
-                                {errors && <p className="errormsg" style={errormsg}>{errors.firstname?.message}</p>}
+                                {errors && <p className="errormsg mt-1" style={errormsg}>{errors.firstname?.message}</p>}
 
                                 <input class="form form__input mb-3" type="text" placeholder="Lastname" {...register("lastname")} />
                                 {/* {errors && <p className="errormsg" style={errormsg}>{errors.lastname?.message}</p>} */}
 
                                 <input class="form form__input" type="password" placeholder="Password" {...register("password")} />
-                                {errors && <p className="errormsg" style={errormsg}>{errors.password?.message}</p>}
+                                {errors && <p className="errormsg mt-1" style={errormsg}>{errors.password?.message}</p>}
 
                                 <span className='form'> <NavLink to="/login">go to login page</NavLink></span>
 
