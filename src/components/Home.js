@@ -87,7 +87,7 @@ const Home = ({ settoggle }) => {
                                         <div className="container-fluid m-4">
                                             <div className="card border-0 rounded-0 shadow" style={{ width: "18rem" }}>
                                                 {
-                                                    val?.images[0] && <img src={require(`../images/${val.images[0]}`)} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." />
+                                                    val?.images[0] && <img src={`${val.images[0]}`} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." />
                                                 }
                                                 <div className="card-body mt-3 mb-3">
                                                     <div className="row">
@@ -151,3 +151,5 @@ export default Home
 //         });
 //     }
 // }, [issuccess, islogin])
+
+//  val?.images[0] && <img src={require(`../images/${val.images[0]}`)} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." /> 

@@ -90,8 +90,10 @@ const EditProduct = () => {
     const [prvimg, setprvimg] = useState([])
     useEffect(() => {
         if (updateproduct) {
-            setprvimg(updateproduct.images)
-            // setimages(updateproduct.images)
+            if (prvimg?.length === 0) {
+                setprvimg(updateproduct.images)
+                // setimages(updateproduct.images)
+            }
         }
     }, [updateproduct])
 
@@ -148,11 +150,17 @@ const EditProduct = () => {
         fd.append("title", data.title)
         fd.append("description", data.description)
         fd.append("price", data.price)
-        fd.append("discountPercentage", data.discountPercentage)
-        fd.append("rating", data.rating)
+        if (data.discountPercentage) {
+            fd.append("discountPercentage", data.discountPercentage)
+        }
+        if (data.rating) {
+            fd.append("rating", data.rating)
+        }
+        if (data.category) {
+            fd.append("category", data.category)
+        }
         fd.append("stock", data.stock)
         fd.append("brand", data.brand)
-        fd.append("category", data.category)
 
         const item = {
             fd,
@@ -194,7 +202,7 @@ const EditProduct = () => {
     // console.log(getId, "gid");
     return (
         <div>
-            <FaEdit type="button" class="" style={{ color: "red", fontSize: "25px" }} data-bs-toggle="modal" data-bs-target="#staticBackdrop" />
+            <div type="button" className="d-flex justify-content-center ms-5" style={{ fontWeight: "bold", color: "blue" }} data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Edit</div>
 
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-xl">
@@ -401,7 +409,7 @@ const EditProduct = () => {
                                                                                     <>
                                                                                         <img
                                                                                             // src={item}                                                                                    
-                                                                                            src={require(`../images/${item}`)}
+                                                                                            src={item}
                                                                                             alt="img-preview"
                                                                                             className="img-fluid"
                                                                                             style={{ width: "250px", height: "200px" }}
