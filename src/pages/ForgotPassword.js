@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
 import { ForgotPasswordAction } from '../store/actions/auth';
+import { ThreeDots } from "react-loader-spinner"
 
 const schema = yup.object({
     email: yup.string().email().required("please enter your email"),
@@ -33,6 +34,8 @@ const ForgotPassword = ({ settoggle }) => {
         resolver: yupResolver(schema),
     });
 
+    const { ForgotPasswordpending } = useSelector((state) => state.auth)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -52,14 +55,33 @@ const ForgotPassword = ({ settoggle }) => {
                             {errors && <p className="errormsg mt-1" style={{ color: "red" }}>{errors.email?.message}</p>}
                             <span className='form'> <NavLink to="/login">go to login page</NavLink></span>
                             <div className='form'>
-                                <button class="form form__button button submit" type='submit'>SEND MAIL</button>
+                                <button class="form form__button button submit" type='submit'>
+                                    {
+                                        ForgotPasswordpending ?
+                                            <div className='d-flex justify-content-center'>
+                                                <ThreeDots
+                                                    visible={true}
+                                                    height="40"
+                                                    width="60"
+                                                    color="white"
+                                                    radius="9"
+                                                    ariaLabel="three-dots-loading"
+                                                    wrapperStyle={{}}
+                                                    wrapperClass=""
+                                                />
+                                            </div>
+                                            :
+                                            "SEND MAIL"
+                                    }
+
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </div>
+            </div >
             <ToastContainer />
-        </div>
+        </div >
     )
 }
 

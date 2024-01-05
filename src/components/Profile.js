@@ -4,6 +4,9 @@ import profilepic from "../images/profile_un.jpg"
 import { loginContext } from '../App'
 import axios from 'axios'
 import { NavLink } from 'react-router-dom'
+import UpdateProfile from './UpdateProfile'
+import { useSelector } from 'react-redux'
+import { ToastContainer, toast } from 'react-toastify';
 
 const Profile = ({ settoggle }) => {
   const [logindata, setlogindata] = useState("")
@@ -20,10 +23,19 @@ const Profile = ({ settoggle }) => {
   useEffect(() => {
     fetchuser()
   }, [])
+
   useEffect(() => {
     settoggle(true)
   }, [])
-  const { userdata, setUserData, setislogin, islogin } = useContext(loginContext)
+
+  const {userupdated} = useSelector((state)=> state.auth)
+
+  useEffect(() => {
+    if(userupdated){
+      fetchuser()
+    }
+  },[userupdated])
+
   const user = localStorage.getItem('username')
   const email = localStorage.getItem('email')
   return (
@@ -35,7 +47,12 @@ const Profile = ({ settoggle }) => {
               <div className="" style={{ boxShadow: "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px" }}>
                 <div className=" text-white d-flex flex-row black-layer">
                   <div className="ms-3 ms-md-5 mt-5 d-flex flex-column page-1" style={{ width: "180px", height: "180px" }}>
-                    <img src={profilepic} alt="profile image" id='img-profile' className="img-thumbnail img-fluid mt-4 mb-2 img-size" />
+                    {
+                      logindata?.user_pic?.length > 0 ?
+                        <img src={logindata?.user_pic[0]} alt="profile image" id='img-profile' className="img-thumbnail img-fluid mt-4 mb-2 img-size" />
+                        :
+                        <img src={profilepic} alt="profile image" id='img-profile' className="img-thumbnail img-fluid mt-4 mb-2 img-size" />
+                    }
                   </div>
                   <div className="ms-3 text-locate">
                     <h5>Username:</h5>
@@ -55,7 +72,7 @@ const Profile = ({ settoggle }) => {
                           <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                          {/* <EditProfile /> */}
+                          <UpdateProfile />
                         </div>
                       </div>
                     </div>
@@ -71,7 +88,10 @@ const Profile = ({ settoggle }) => {
                   <div>
                     <p className="lead fw-normal mb-2 mt-3"><strong>Contact Details</strong></p>
                     <div className="p-3">
-                      {/* <p className="font-italic mb-1"><strong>Phone No :</strong> {email}</p> */}
+                      {
+                        logindata?.mobile &&
+                        <p className="font-italic mb-1"><strong>Phone No :</strong> {logindata?.mobile}</p>
+                      }
                       <p className="font-italic mb-0"><strong>Email Id : </strong>{email || logindata?.email}</p>
                     </div>
                   </div>
@@ -81,6 +101,7 @@ const Profile = ({ settoggle }) => {
           </div>
         </section>
       </div>
+      <ToastContainer />
     </div>
   )
 }

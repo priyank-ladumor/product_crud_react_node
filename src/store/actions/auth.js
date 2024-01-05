@@ -56,6 +56,32 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const userUpdate = createAsyncThunk(
+  "user/update",
+  async (item, { rejectWithValue }) => {
+    const token = JSON.parse(localStorage.getItem('usertoken'))
+    try {
+      const result = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/user/update`,
+        item,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": token
+          },
+        }
+      );
+      return result.data;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
 export const ForgotPasswordAction = createAsyncThunk(
   "auth/ForgotPassword",
   async (item, { rejectWithValue }) => {
@@ -127,7 +153,18 @@ export const ResetPasswordAction = createAsyncThunk(
           progress: undefined,
           theme: "light",
         });
-      } 
+      } else {
+        toast.error('time expired', {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
       localStorage.clear()
       return result.data;
     } catch (error) {

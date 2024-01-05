@@ -9,7 +9,7 @@ import { CPaginationItem, CPagination } from '@coreui/react'
 import { NavLink, useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { ColorRing } from "react-loader-spinner"
-
+import { FaHeart } from "react-icons/fa";
 
 
 const Home = ({ settoggle }) => {
@@ -50,6 +50,23 @@ const Home = ({ settoggle }) => {
         dispatch(getProducts(page))
     }, [page])
 
+    // const [isHovering, setIsHovering] = useState(false);
+
+    // const handleMouseEnter = () => {
+    //     setIsHovering(true);
+    // };
+
+    // const handleMouseLeave = () => {
+    //     setIsHovering(false);
+    // };
+
+    const [watchlatter, setWatchLatter] = useState(null)
+    const [watchlatterarr, setWatchLatterarr] = useState(null)
+
+    const watchlist = (id) => {
+
+    }
+    console.log(watchlatter);
     return (
         <div>
             <div className='d-flex justify-content-center mt-5'>
@@ -78,41 +95,49 @@ const Home = ({ settoggle }) => {
                 </div>
 
                 :
-                <div className="row d-flex justify-content-evenly gy-3 m-5">
+                <div className="row d-flex justify-content-evenly gy-3 m-5" >
                     {item && Array.from(item).map((val, i) => {
                         return (
                             <>
-                                <div className='col-md-5 col-lg-4 my-4 mx-md-2 mx-lg-0 d-flex justify-content-center' style={{ cursor: "pointer" }}>
-                                    <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
-                                        <div className="container-fluid m-4">
-                                            <div className="card border-0 rounded-0 shadow" style={{ width: "18rem" }}>
-                                                {
-                                                    val?.images[0] && <img src={`${val.images[0]}`} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." />
-                                                }
-                                                <div className="card-body mt-3 mb-3">
-                                                    <div className="row">
-                                                        <div className="col-12">
-                                                            <h4 className="card-title" style={{ minHeight: "80px" }}>{val.title}</h4>
-                                                            <div className='col-12 d-flex' style={{ fontSize: "18px", fontWeight: "700", textTransform: "capitalize" }}>
-                                                                <span className='col-6'>rating: {val?.rating}</span>
-                                                                <span className='col-6' >{val.category}</span>
+                                <div className='col-md-5 col-lg-4 my-4 mx-md-2 mx-lg-0 d-flex justify-content-center' style={{ cursor: "pointer", position: "relative" }}
+                                // onMouseEnter={handleMouseEnter}
+                                // onMouseLeave={handleMouseLeave}
+                                >
+                                    <div>
+                                        <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
+                                            <div className="container-fluid m-4">
+                                                <div className="card border-0 rounded-0 shadow" style={{ width: "18rem" }}>
+                                                    {
+                                                        val?.images[0] && <img src={`${val.images[0]}`} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." />
+                                                    }
+                                                    <div className="card-body mt-3 mb-3">
+                                                        <div className="row">
+                                                            <div className="col-12">
+                                                                <h4 className="card-title" style={{ minHeight: "80px" }}>{val.title}</h4>
+                                                                <div className='col-12 d-flex' style={{ fontSize: "18px", fontWeight: "700", textTransform: "capitalize" }}>
+                                                                    <span className='col-6'>rating: {val?.rating}</span>
+                                                                    <span className='col-6' >{val.category}</span>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <div>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                    </div>
-                                                </div>
-                                                <div className="row align-items-center text-center g-0">
-                                                    <div className="col-4">
-                                                        ${val.price}
-                                                    </div>
-                                                    <div className="col-8">
-                                                        <a href="#" className="btn btn-dark w-100 p-3 rounded-0 text-warning">ADD TO CART</a>
+                                                    <div className="row align-items-center text-center g-0">
+                                                        <div className="col-4">
+                                                            ${val.price}
+                                                        </div>
+                                                        <div className="col-8">
+                                                            <a href="#" className="btn btn-dark w-100 p-3 rounded-0 text-warning">ADD TO CART</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </NavLink>
+                                        </NavLink>
+                                    </div>
+                                    <div style={{ background: "" }}>
+                                        <FaHeart onClick={() => watchlist(val._id)} style={{ position: "absolute", right: "180px", top: "35px", fontSize: "25px", color: "white" }} />
+                                    </div>
                                 </div>
                             </>
                         )
@@ -130,26 +155,4 @@ const Home = ({ settoggle }) => {
 export default Home
 
 
-// useEffect(() => {
-//     if (isrefresh && !islogin) {
-//         navigate('/login')
-//     }
-// }, [isrefresh])
 
-// let auth2 = localStorage.getItem("username")
-// useEffect(() => {
-//     if ((issuccess && !islogin)) {
-//         toast.success('user login successfully', {
-//             position: "top-right",
-//             autoClose: 4000,
-//             hideProgressBar: false,
-//             closeOnClick: true,
-//             pauseOnHover: true,
-//             draggable: true,
-//             progress: undefined,
-//             theme: "light",
-//         });
-//     }
-// }, [issuccess, islogin])
-
-//  val?.images[0] && <img src={require(`../images/${val.images[0]}`)} className="card-img-top rounded-0 img-fluid" style={{ height: "200px" }} alt="..." /> 

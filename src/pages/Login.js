@@ -12,6 +12,8 @@ import { auth } from "../firebase/firebaseConfig"
 import { Logout } from '../store/slices/authSlice';
 import { loginContext } from '../App';
 import axios from 'axios';
+import ReCAPTCHA from "react-google-recaptcha";
+
 
 const schema = yup.object({
     email: yup.string().email().required("please enter your email"),
@@ -21,6 +23,7 @@ const schema = yup.object({
 
 const Login = ({ settoggle }) => {
 
+  
     useEffect(() => {
         settoggle(true)
     }, [])
@@ -48,6 +51,9 @@ const Login = ({ settoggle }) => {
     const errormsg = {
         color: "red",
     }
+
+    const [Captcha , setCaptcha] = useState(false)
+
 
     const { userdata, setUserData, setislogin, islogin } = useContext(loginContext)
 
@@ -149,6 +155,10 @@ const Login = ({ settoggle }) => {
                             {errors && <p className="errormsg mt-1" style={errormsg}>{errors.email?.message}</p>}
                             <input class="form__input" type="password" placeholder="Password" {...register("password")} />
                             {errors && <p className="errormsg mt-1" style={errormsg}>{errors.password?.message}</p>}
+                            {/* <ReCAPTCHA
+                                sitekey="6LdlpkYpAAAAAFcMBO5RBdntbO06TPUizNTuKHks"
+                                onChange={() => setCaptcha(true)}
+                            /> */}
                             <div className='form'>
                                 <NavLink class="form form_link form d-flex justify-content-center" to="/login/forgot-password">Forgot your password?</NavLink>
                             </div>

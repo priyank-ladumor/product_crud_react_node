@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser, loginUser, ForgotPasswordAction, ResetPasswordAction } from "../actions/auth";
+import { registerUser, loginUser, ForgotPasswordAction, ResetPasswordAction, userUpdate } from "../actions/auth";
 
 const initialState = {
     loading: false,
@@ -13,7 +13,9 @@ const initialState = {
     issuccess: false,
     isrefresh: false,
     ForgotPassword: false,
+    ForgotPasswordpending: false,
     ResetPassword: false,
+    userupdated: false
 };
 
 const authSlice = createSlice({
@@ -91,14 +93,17 @@ const authSlice = createSlice({
 
         builder.addCase(ForgotPasswordAction.pending, (state, { payload }) => {
             state.ForgotPassword = false;
+            state.ForgotPasswordpending = true;
         })
 
         builder.addCase(ForgotPasswordAction.fulfilled, (state, { payload }) => {
             state.ForgotPassword = true;
+            state.ForgotPasswordpending = false;
         })
 
         builder.addCase(ForgotPasswordAction.rejected, (state, { payload }) => {
             state.ForgotPassword = false;
+            state.ForgotPasswordpending = false;
         })
 
         builder.addCase(ResetPasswordAction.pending, (state, { payload }) => {
@@ -111,6 +116,18 @@ const authSlice = createSlice({
 
         builder.addCase(ResetPasswordAction.rejected, (state, { payload }) => {
             state.ResetPassword = false;
+        })
+
+        builder.addCase(userUpdate.pending, (state, { payload }) => {
+            state.userupdated = false;
+        })
+
+        builder.addCase(userUpdate.fulfilled, (state, { payload }) => {
+            state.userupdated = true;
+        })
+
+        builder.addCase(userUpdate.rejected, (state, { payload }) => {
+            state.userupdated = false;
         })
     }
 });
