@@ -156,7 +156,8 @@ const Login = ({ settoggle }) => {
                             <input class="form__input" type="password" placeholder="Password" {...register("password")} />
                             {errors && <p className="errormsg mt-1" style={errormsg}>{errors.password?.message}</p>}
                             {/* <ReCAPTCHA
-                                sitekey="6LdlpkYpAAAAAFcMBO5RBdntbO06TPUizNTuKHks"
+                                sitekey="6LcC4UcpAAAAAPBVLobEHfIBvhddk0iMz9SjQ8Xc"
+                                // sitekey="6LdlpkYpAAAAAFcMBO5RBdntbO06TPUizNTuKHks"
                                 onChange={() => setCaptcha(true)}
                             /> */}
                             <div className='form'>

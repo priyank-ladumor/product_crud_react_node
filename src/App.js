@@ -14,6 +14,7 @@ import AddProduct from './components/AddProduct';
 import EditProduct from './components/EditProduct';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Wishlist from './components/Wishlist';
 
 
 
@@ -23,6 +24,7 @@ export const updateProductContext = createContext()
 function App() {
   const [userdata, setUserData] = useState("")
   const [islogin, setislogin] = useState(false)
+  const [logindata, setlogindata] = useState("")
   const [token, settoken] = useState("")
   const [toggle, settoggle] = useState(true)
   const [getId, setGetId] = useState(null)
@@ -32,7 +34,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <loginContext.Provider value={{ userdata, setUserData, setislogin, islogin, token, settoken }}>
+        <loginContext.Provider value={{ userdata, setUserData, setislogin, islogin, logindata, setlogindata, settoken , token}}>
           <updateProductContext.Provider value={{ getId, setGetId }}>
 
             {toggle && <Navbar />}
@@ -51,6 +53,7 @@ function App() {
 
               <Route path='/' element={<Protected />}>
                 <Route path='/profile' element={<Profile settoggle={settoggle} />} />
+                <Route path='/user/wishlist' element={<Wishlist settoggle={settoggle} />} />
                 <Route path='/add/product' element={<AddProduct settoggle={settoggle} />} />
                 <Route path='/myproduct' element={<MyProduct settoggle={settoggle} />} />
                 <Route path='/edit/product' element={<EditProduct settoggle={settoggle} />} />

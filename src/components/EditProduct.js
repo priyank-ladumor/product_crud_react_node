@@ -68,14 +68,25 @@ const EditProduct = () => {
 
     const [updateproduct, setupdateproduct] = useState()
     const newData = (e) => {
+        // const items = {
+        //     title: updateproduct.title,
+        //     price: updateproduct.price,
+        //     rating: updateproduct.rating,
+        //     description: updateproduct.description,
+        //     category: updateproduct.category,
+        //     brand: updateproduct.brand,
+        //     stock: updateproduct.stock,
+        //     discountPercentage: updateproduct.discountPercentage,
+        // }
         setupdateproduct({ ...updateproduct, [e.target.name]: e.target.value });
     };
 
     useEffect(() => {
         if (userproductmodal) {
             let modeldata = userproductmodal[0]
-            if (modeldata) {
+            if (modeldata && getId) {
                 setupdateproduct(modeldata)
+                setprvimg(modeldata.images)
             }
             setValue("title", modeldata?.title);
             setValue("price", modeldata?.price);
@@ -87,11 +98,12 @@ const EditProduct = () => {
             setValue("discountPercentage", modeldata?.discountPercentage);
         }
     }, [userproductmodal])
+    
     const [prvimg, setprvimg] = useState([])
     useEffect(() => {
         if (updateproduct) {
-            if (prvimg?.length === 0) {
-                setprvimg(updateproduct.images)
+            if (images?.length === 0 && getId) {
+                // setprvimg(updateproduct.images)
                 // setimages(updateproduct.images)
             }
         }
@@ -199,7 +211,7 @@ const EditProduct = () => {
     };
     console.log(prvimg, "prvimg");
     console.log(images, "images");
-    // console.log(getId, "gid");
+    console.log(getId, "gid");
     return (
         <div>
             <div type="button" className="d-flex justify-content-center ms-5" style={{ fontWeight: "bold", color: "blue" }} data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Edit</div>
@@ -405,7 +417,7 @@ const EditProduct = () => {
                                                                                     </>
                                                                                 }
 
-                                                                                {(images?.length === 0 && prvimg?.length > 0) &&
+                                                                                {(images?.length === 0 && getId) &&
                                                                                     <>
                                                                                         <img
                                                                                             // src={item}                                                                                    

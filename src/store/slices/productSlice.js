@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProducts, getSingleProducts, getUserProducts, deleteProducts, createProducts, updateProductAction } from "../actions/product";
+import { getProducts, getSingleProducts, getUserProducts, deleteProducts, createProducts, updateProductAction, watchlaterAction, getwatchlaterAction } from "../actions/product";
 
 const initialState = {
     loading: false,
@@ -18,7 +18,9 @@ const initialState = {
     updateproductdata: null,
     updateerror: null,
     updatesuccess: false,
-    isloader:false
+    isloader: false,
+    iswatchlater: null,
+    getwatchlater: []
 };
 
 const productSlice = createSlice({
@@ -120,6 +122,30 @@ const productSlice = createSlice({
             state.updateproductdata = null;
             state.updateerror = payload;
             state.updatesuccess = false;
+        })
+
+        builder.addCase(watchlaterAction.pending, (state, { payload }) => {
+            state.iswatchlater = null;
+        })
+
+        builder.addCase(watchlaterAction.fulfilled, (state, { payload }) => {
+            state.iswatchlater = payload;
+        })
+
+        builder.addCase(watchlaterAction.rejected, (state, { payload }) => {
+            state.iswatchlater = null;
+        })
+
+        builder.addCase(getwatchlaterAction.pending, (state, { payload }) => {
+            state.getwatchlater = null;
+        })
+
+        builder.addCase(getwatchlaterAction.fulfilled, (state, { payload }) => {
+            state.getwatchlater = payload;
+        })
+
+        builder.addCase(getwatchlaterAction.rejected, (state, { payload }) => {
+            state.getwatchlater = null;
         })
     }
 });

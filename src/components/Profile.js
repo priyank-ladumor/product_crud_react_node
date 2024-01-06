@@ -9,17 +9,19 @@ import { useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify';
 
 const Profile = ({ settoggle }) => {
-  const [logindata, setlogindata] = useState("")
+  const [loginuser, setloginuser] = useState("")
   let token = JSON.parse(localStorage.getItem("usertoken"))
 
   const fetchuser = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user`, { headers: { Authorization: token } })
-      setlogindata(res.data)
+      setloginuser(res.data)
     } catch (err) {
       console.log(err);
     }
   }
+  // const { userdata, setUserData, islogin, setislogin, logindata, setlogindata } = useContext(loginContext)
+
   useEffect(() => {
     fetchuser()
   }, [])
@@ -28,13 +30,13 @@ const Profile = ({ settoggle }) => {
     settoggle(true)
   }, [])
 
-  const {userupdated} = useSelector((state)=> state.auth)
+  const { userupdated } = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if(userupdated){
+    if (userupdated) {
       fetchuser()
     }
-  },[userupdated])
+  }, [userupdated])
 
   const user = localStorage.getItem('username')
   const email = localStorage.getItem('email')
@@ -48,15 +50,15 @@ const Profile = ({ settoggle }) => {
                 <div className=" text-white d-flex flex-row black-layer">
                   <div className="ms-3 ms-md-5 mt-5 d-flex flex-column page-1" style={{ width: "180px", height: "180px" }}>
                     {
-                      logindata?.user_pic?.length > 0 ?
-                        <img src={logindata?.user_pic[0]} alt="profile image" id='img-profile' className="img-thumbnail img-fluid mt-4 mb-2 img-size" />
+                      loginuser?.user_pic?.length > 0 ?
+                        <img src={loginuser?.user_pic[0]} alt="profile image" id='img-profile' className="img-thumbnail img-fluid mt-4 mb-2 img-size" />
                         :
                         <img src={profilepic} alt="profile image" id='img-profile' className="img-thumbnail img-fluid mt-4 mb-2 img-size" />
                     }
                   </div>
                   <div className="ms-3 text-locate">
                     <h5>Username:</h5>
-                    <h5>{user || (logindata?.firstname + logindata?.lastname)}</h5>
+                    <h5>{user || (loginuser?.firstname + loginuser?.lastname)}</h5>
                   </div>
                 </div>
                 <div className="d-flex mt-5 ms-3 ms-md-5">
@@ -78,7 +80,7 @@ const Profile = ({ settoggle }) => {
                     </div>
                   </div>
 
-                  <NavLink to={`/user/reset-password/${logindata?.id}/${token}`} className="btn btn-outline-dark ms-3 mt-3" style={{ zIndex: "1" }}>
+                  <NavLink to={`/user/reset-password/${loginuser?.id}/${token}`} className="btn btn-outline-dark ms-3 mt-3" style={{ zIndex: "1" }}>
                     Reset Password
                   </NavLink>
 
@@ -89,10 +91,10 @@ const Profile = ({ settoggle }) => {
                     <p className="lead fw-normal mb-2 mt-3"><strong>Contact Details</strong></p>
                     <div className="p-3">
                       {
-                        logindata?.mobile &&
-                        <p className="font-italic mb-1"><strong>Phone No :</strong> {logindata?.mobile}</p>
+                        loginuser?.mobile &&
+                        <p className="font-italic mb-1"><strong>Phone No :</strong> {loginuser?.mobile}</p>
                       }
-                      <p className="font-italic mb-0"><strong>Email Id : </strong>{email || logindata?.email}</p>
+                      <p className="font-italic mb-0"><strong>Email Id : </strong>{email || loginuser?.email}</p>
                     </div>
                   </div>
                 </div>

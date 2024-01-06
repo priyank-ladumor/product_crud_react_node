@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { loginContext } from '../App';
 import { useDispatch, useSelector } from "react-redux";
 import "../style/Navbar.css"
+import { FaHeart } from "react-icons/fa";
+import { CAvatar } from '@coreui/react'
+
 const Navbar = () => {
     const { userdata, setUserData, islogin, setislogin, token, settoken } = useContext(loginContext)
 
@@ -83,40 +86,48 @@ const Navbar = () => {
                             </li>
                         </ul>
                         {auth ?
-                            <CDropdown variant="btn-group" >
-                                <CDropdownToggle color={'primary'}>Profile</CDropdownToggle>
-                                <CDropdownMenu>
-                                    <ul className='' style={{ listStyle: "none", fontSize: "18px", fontWeight: "600" }}>
-                                        <li className='mb-2 d-hover'>
-                                            <NavLink className="nav-link nav-text" to="/profile">
-                                                <span
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target=".navbar-collapse.show"
-                                                >
-                                                    My Profile
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                        <li className='d-hover'>
-                                            <NavLink className="nav-link nav-text" to="/myproduct">
-                                                <span
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target=".navbar-collapse.show"
-                                                >
-                                                    My Product
-                                                </span>
-                                            </NavLink>
-                                        </li>
-                                    </ul>
-                                    <CDropdownDivider />
-                                    <div className='d-flex justify-content-center'>
-                                        <button className='btn btn-danger' onClick={logout}>logout</button>
-                                    </div>
-                                </CDropdownMenu>
-                            </CDropdown>
+                            <>
+                                <div className="me-2">
+                                    <NavLink to="/user/wishlist">
+                                        <CAvatar color="secondary rounded-circle" size="lg" style={{ cursor: "pointer" }}>
+                                            <FaHeart style={{ fontSize: "38px", color: "white" }} className='p-2' />
+                                        </CAvatar>
+                                    </NavLink>
+                                </div>
+                                <CDropdown variant="btn-group" >
+                                    <CDropdownToggle color={'primary'}>Profile</CDropdownToggle>
+                                    <CDropdownMenu>
+                                        <ul className='' style={{ listStyle: "none", fontSize: "18px", fontWeight: "600" }}>
+                                            <li className='mb-2 d-hover'>
+                                                <NavLink className="nav-link nav-text" to="/profile">
+                                                    <span
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target=".navbar-collapse.show"
+                                                    >
+                                                        My Profile
+                                                    </span>
+                                                </NavLink>
+                                            </li>
+                                            <li className='d-hover'>
+                                                <NavLink className="nav-link nav-text" to="/myproduct">
+                                                    <span
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target=".navbar-collapse.show"
+                                                    >
+                                                        My Product
+                                                    </span>
+                                                </NavLink>
+                                            </li>
+                                        </ul>
+                                        <CDropdownDivider />
+                                        <div className='d-flex justify-content-center'>
+                                            <button className='btn btn-danger' onClick={logout}>logout</button>
+                                        </div>
+                                    </CDropdownMenu>
+                                </CDropdown>
+                            </>
                             :
                             <NavLink className="nav-link px-3" to="/login"><button className='btn btn-primary'>Login</button></NavLink>
-                            
                         }
                     </div>
                 </div>
