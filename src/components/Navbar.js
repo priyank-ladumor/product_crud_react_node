@@ -7,11 +7,13 @@ import { loginContext } from '../App';
 import { useDispatch, useSelector } from "react-redux";
 import "../style/Navbar.css"
 import { FaHeart } from "react-icons/fa";
-import { CAvatar } from '@coreui/react'
+import { CAvatar, CBadge } from '@coreui/react'
+import axios from "axios";
+
 
 const Navbar = () => {
-    const { userdata, setUserData, islogin, setislogin, token, settoken } = useContext(loginContext)
-
+    const { userdata, setUserData, islogin, setislogin, logindata, settoken, setlogindata } = useContext(loginContext)
+    const { iswatchlater, getwatchlater } = useSelector((state) => state.product)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -22,7 +24,28 @@ const Navbar = () => {
         settoken('')
         navigate('/login', { replace: true })
     }
-    let auth = localStorage.getItem("usertoken") || localStorage.getItem("username")
+    let auth = JSON.parse(localStorage.getItem("usertoken"))
+    const fetchuser = async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/user`, { headers: { Authorization: auth } })
+            setFindLen(res.data)
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const [findLen, setFindLen] = useState();
+
+    useEffect(() => {
+        if (auth) {
+            fetchuser()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (auth) {
+            fetchuser()
+        }
+    }, [logindata, iswatchlater, getwatchlater])
 
     return (
         <div>
@@ -89,8 +112,11 @@ const Navbar = () => {
                             <>
                                 <div className="me-2">
                                     <NavLink to="/user/wishlist">
-                                        <CAvatar color="secondary rounded-circle" size="lg" style={{ cursor: "pointer" }}>
-                                            <FaHeart style={{ fontSize: "38px", color: "white" }} className='p-2' />
+                                        <CAvatar color="secondary rounded-circle me-4" size="lg" style={{ cursor: "pointer" }}>
+                                            <FaHeart style={{ fontSize: "38px", color: "white", position: "relative" }} className='p-2' />
+                                            <CBadge color="danger" position="absolute" className='' shape="rounded-pill">
+                                                {findLen && findLen.watchlater?.length}
+                                            </CBadge>
                                         </CAvatar>
                                     </NavLink>
                                 </div>

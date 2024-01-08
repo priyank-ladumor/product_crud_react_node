@@ -10,7 +10,7 @@ import { NavLink, useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { ColorRing } from "react-loader-spinner"
 import { FaHeart } from "react-icons/fa";
-import { CAvatar } from '@coreui/react'
+import { CAvatar, CBadge } from '@coreui/react'
 import axios from 'axios'
 
 const Home = ({ settoggle }) => {
@@ -21,7 +21,7 @@ const Home = ({ settoggle }) => {
     const [item, setitem] = useState("")
 
     const { isrefresh, issuccess, isuserToken } = useSelector((state) => state.auth);
-    const { product, loading, success } = useSelector((state) => state.product);
+    const { product, loading, success, iswatchlater, getwatchlater } = useSelector((state) => state.product);
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { userdata, setUserData, islogin, setislogin, logindata, setlogindata } = useContext(loginContext)
@@ -156,53 +156,53 @@ const Home = ({ settoggle }) => {
                             </>
                         )
                     })
-                    : item && Array.from(item).map((val, i) => {
-                        return (
-                            <>
-                                <div className='col-md-5 col-lg-4 my-4 mx-md-2 mx-lg-0 d-flex justify-content-center' style={{ cursor: "pointer", position: "relative" }}
-  
-                                >
-                                    <div>
-                                        <div className="container-fluid m-4">
-                                            <div className="card border-0 rounded-0 shadow" style={{ width: "18rem" }}>
-                                                <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
-                                                    {
-                                                        val?.images[0] && <img src={`${val.images[0]}`} className="card-img-top rounded-0 img-fluid" style={{ height: "200px", position: "relative" }} alt="..." />
-                                                    }
-                                                </NavLink>
-                                                <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
+                        : item && Array.from(item).map((val, i) => {
+                            return (
+                                <>
+                                    <div className='col-md-5 col-lg-4 my-4 mx-md-2 mx-lg-0 d-flex justify-content-center' style={{ cursor: "pointer", position: "relative" }}
 
-                                                    <div className="card-body mt-3 mb-3">
-                                                        <div className="row">
-                                                            <div className="col-12">
-                                                                <h4 className="card-title" style={{ minHeight: "80px" }}>{val.title}</h4>
-                                                                <div className='col-12 d-flex' style={{ fontSize: "18px", fontWeight: "700", textTransform: "capitalize" }}>
-                                                                    <span className='col-6'>rating: {val?.rating}</span>
-                                                                    <span className='col-6' >{val.category}</span>
+                                    >
+                                        <div>
+                                            <div className="container-fluid m-4">
+                                                <div className="card border-0 rounded-0 shadow" style={{ width: "18rem" }}>
+                                                    <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
+                                                        {
+                                                            val?.images[0] && <img src={`${val.images[0]}`} className="card-img-top rounded-0 img-fluid" style={{ height: "200px", position: "relative" }} alt="..." />
+                                                        }
+                                                    </NavLink>
+                                                    <NavLink to={`/productsdetails/${val._id}`} style={{ textDecoration: "none", color: "black" }}>
+
+                                                        <div className="card-body mt-3 mb-3">
+                                                            <div className="row">
+                                                                <div className="col-12">
+                                                                    <h4 className="card-title" style={{ minHeight: "80px" }}>{val.title}</h4>
+                                                                    <div className='col-12 d-flex' style={{ fontSize: "18px", fontWeight: "700", textTransform: "capitalize" }}>
+                                                                        <span className='col-6'>rating: {val?.rating}</span>
+                                                                        <span className='col-6' >{val.category}</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <div>
+                                                            </div>
                                                         </div>
-                                                        <div>
+                                                        <div className="row align-items-center text-center g-0">
+                                                            <div className="col-4">
+                                                                ${val.price}
+                                                            </div>
+                                                            <div className="col-8">
+                                                                <a href="#" className="btn btn-dark w-100 p-3 rounded-0 text-warning">ADD TO CART</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div className="row align-items-center text-center g-0">
-                                                        <div className="col-4">
-                                                            ${val.price}
-                                                        </div>
-                                                        <div className="col-8">
-                                                            <a href="#" className="btn btn-dark w-100 p-3 rounded-0 text-warning">ADD TO CART</a>
-                                                        </div>
-                                                    </div>
-                                                </NavLink>
+                                                    </NavLink>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div style={{ background: "" }}>
+                                        </div>
                                     </div>
-                                    <div style={{ background: "" }}>
-                                    </div>
-                                </div>
-                            </>
-                        )
-                    })
+                                </>
+                            )
+                        })
                     }
                     {(loading) ? "" :
                         item?.length === 0 && <h1 className='d-flex justify-content-center mt-5' style={{ color: "red" }}>sorry, there is no more products!</h1>

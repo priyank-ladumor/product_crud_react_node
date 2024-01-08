@@ -126,26 +126,32 @@ const productSlice = createSlice({
 
         builder.addCase(watchlaterAction.pending, (state, { payload }) => {
             state.iswatchlater = null;
+            state.getwatchlater = null;
         })
 
         builder.addCase(watchlaterAction.fulfilled, (state, { payload }) => {
             state.iswatchlater = payload;
+            state.getwatchlater = null;
         })
 
         builder.addCase(watchlaterAction.rejected, (state, { payload }) => {
             state.iswatchlater = null;
+            state.getwatchlater = null;
         })
 
         builder.addCase(getwatchlaterAction.pending, (state, { payload }) => {
             state.getwatchlater = null;
+            state.iswatchlater = null;
         })
 
         builder.addCase(getwatchlaterAction.fulfilled, (state, { payload }) => {
             state.getwatchlater = payload;
+            state.iswatchlater = null;
         })
 
         builder.addCase(getwatchlaterAction.rejected, (state, { payload }) => {
             state.getwatchlater = null;
+            state.iswatchlater = null;
         })
     }
 });
